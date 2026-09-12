@@ -104,6 +104,11 @@ impl Registration {
         self.shared.clear_readiness(event);
     }
 
+    pub(crate) fn reregister(&self, io: &mut impl Source, interest: Interest) -> io::Result<()> {
+        self.handle()
+            .reregister_source(&self.shared, io, interest)
+    }
+
     // Uses the poll path, requiring the caller to ensure mutual exclusion for
     // correctness. Only the last task to call this function is notified.
     pub(crate) fn poll_read_ready(&self, cx: &mut Context<'_>) -> Poll<io::Result<ReadyEvent>> {

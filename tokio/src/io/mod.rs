@@ -261,6 +261,16 @@ cfg_net_unix! {
     }
 }
 
+#[cfg(target_os = "naos")]
+pub mod naos {
+    //! Async adapters for NaOS capability handles.
+
+    mod handle;
+
+    pub use super::ready::Ready;
+    pub use handle::{Event, Readiness};
+}
+
 cfg_io_std! {
     mod stdio_common;
 

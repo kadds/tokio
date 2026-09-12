@@ -101,6 +101,11 @@ bytes = { version = "1.2.1", optional = true }
 mio = { version = "1.2.0", optional = true, default-features = false }
 parking_lot = { version = "0.12.0", optional = true }
 
+# NaOS has no Unix file descriptors. Its selector is selected by the target
+# backend and must be available whenever Tokio is built for NaOS.
+[target.'cfg(target_os = "naos")'.dependencies]
+mio = { version = "1.2.0", default-features = false, features = ["os-poll"] }
+
 [target.'cfg(any(not(target_family = "wasm"), all(target_os = "wasi", not(target_env = "p1"))))'.dependencies]
 socket2 = { version = "0.6.3", optional = true, features = ["all"] }
 
@@ -184,6 +189,9 @@ rustc-args = ["--cfg", "tokio_unstable"]
 [package.metadata.playground]
 features = ["full", "test-util"]
 
+[lints.rust]
+unexpected_cfgs = "allow"
+
 [package.metadata.cargo_check_external_types]
 # The following are types that are allowed to be exposed in Tokio's public API.
 # The standard library is allowed by default.
@@ -192,6 +200,3 @@ allowed_external_types = [
   "bytes::buf::buf_mut::BufMut",
   "tokio_macros::*",
 ]
-
-[lints]
-workspace = true

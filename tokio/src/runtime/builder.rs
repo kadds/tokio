@@ -396,6 +396,7 @@ impl Builder {
     pub fn enable_all(&mut self) -> &mut Self {
         #[cfg(any(
             feature = "net",
+            target_os = "naos",
             all(unix, feature = "process"),
             all(unix, feature = "signal")
         ))]

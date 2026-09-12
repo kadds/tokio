@@ -151,6 +151,7 @@ macro_rules! cfg_io_driver {
         $(
             #[cfg(any(
                 feature = "net",
+                target_os = "naos",
                 all(unix, feature = "process"),
                 all(unix, feature = "signal"),
                 all(
@@ -163,6 +164,7 @@ macro_rules! cfg_io_driver {
             ))]
             #[cfg_attr(docsrs, doc(cfg(any(
                 feature = "net",
+                target_os = "naos",
                 all(unix, feature = "process"),
                 all(unix, feature = "signal"),
                 all(
@@ -183,6 +185,7 @@ macro_rules! cfg_io_driver_impl {
         $(
             #[cfg(any(
                 feature = "net",
+                target_os = "naos",
                 all(unix, feature = "process"),
                 all(unix, feature = "signal"),
                 all(
@@ -203,6 +206,7 @@ macro_rules! cfg_not_io_driver {
         $(
             #[cfg(not(any(
                 feature = "net",
+                target_os = "naos",
                 all(unix, feature = "process"),
                 all(unix, feature = "signal"),
                 all(

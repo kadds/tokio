@@ -70,7 +70,7 @@ pub(crate) struct Handle {
     pub(crate) uring_probe: OnceCell<Option<io_uring::Probe>>,
 }
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub(crate) struct ReadyEvent {
     pub(super) tick: u8,
     pub(crate) ready: Ready,
@@ -321,6 +321,16 @@ impl Handle {
         self.metrics.dec_fd_count();
 
         os_result // Return error after cleanup
+    }
+
+    pub(super) fn reregister_source(
+        &self,
+        registration: &Arc<ScheduledIo>,
+        source: &mut impl Source,
+        interest: Interest,
+    ) -> io::Result<()> {
+        self.registry
+            .reregister(source, registration.token(), interest.to_mio())
     }
 
     fn release_pending_registrations(&self) {
